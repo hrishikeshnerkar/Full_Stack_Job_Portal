@@ -42,19 +42,8 @@ public class UsersController {
 
     @PostMapping("/register/new")
     public String userRegistration(@Valid Users users, Model model){
-
-//        Optional<Users> optionalUsers = usersService.getUserByEmail(users.getEmail());
-//
-//        if(optionalUsers.isPresent()){
-//            model.addAttribute("error","Email already registered, try to login or register with other email");
-//            List<UsersType> usersTypes = usersTypeService.getAll();
-//            model.addAttribute("getAllTypes", usersTypes);
-//            model.addAttribute("user", new Users());
-//            return "register";
-//        }
-
         usersService.addNew(users);
-        return "dashboard";
+        return "redirect:/dashboard/";
     }
 
     @GetMapping("/login")
