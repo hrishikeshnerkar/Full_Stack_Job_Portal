@@ -1,8 +1,10 @@
 package com.example.jobportal.services;
 
+import com.example.jobportal.entity.JobPostActivity;
 import com.example.jobportal.entity.JobSeekerProfile;
 import com.example.jobportal.entity.JobSeekerSave;
 import com.example.jobportal.repository.JobSeekerSaveRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,7 @@ public class JobSeekerSaveService {
 
     private final JobSeekerSaveRepo jobSeekerSaveRepo;
 
+    @Autowired
     public JobSeekerSaveService(JobSeekerSaveRepo jobSeekerSaveRepo) {
         this.jobSeekerSaveRepo = jobSeekerSaveRepo;
     }
@@ -20,5 +23,7 @@ public class JobSeekerSaveService {
         return jobSeekerSaveRepo.findByUserId(userAccountId);
     }
 
-    public
+    public List<JobSeekerSave> getJobCandidates(JobPostActivity job){
+        return jobSeekerSaveRepo.findByJob(job);
+    }
 }
