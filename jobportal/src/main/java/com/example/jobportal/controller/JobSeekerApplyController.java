@@ -39,6 +39,7 @@ public class JobSeekerApplyController {
         this.jobSeekerProfileService = jobSeekerProfileService;
     }
 
+    /*
     @GetMapping("job-details-apply/{id}")
     public String display(@PathVariable("id") int id, Model model) {
         JobPostActivity jobDetails = jobPostActivityService.getOne(id);
@@ -76,11 +77,51 @@ public class JobSeekerApplyController {
             }
         }
 
+        JobSeekerApply jobSeekerApply = new JobSeekerApply();
+        model.addAttribute("applyJob", jobSeekerApply);
+
         model.addAttribute("jobDetails", jobDetails);
         model.addAttribute("user", usersService.getCurrentUserProfile());
 
         return "job-details";
     }
+     */
+
+    @GetMapping("job-details-apply/{id}")
+    public String display(@PathVariable("id") int id, Model model) {
+        JobPostActivity jobDetails = jobPostActivityService.getOne(id);
+
+        List<JobSeekerApply> jobSeekerApplyList = jobSeekerApplyService.getJobCandidates(jobDetails);
+        List<JobSeekerSave> jobSeekerSaveList = jobSeekerSaveService.getJobCandidates(jobDetails);
+
+        model.addAttribute("applyList", jobSeekerApplyList); // ✅ Always add this
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("RecruiterProfile"))) {
+                // Recruiter-specific logic if needed
+            } else {
+                JobSeekerProfile user = jobSeekerProfileService.getCurrentSeekerProfile();
+                if (user != null) {
+                    boolean exists = jobSeekerApplyList.stream()
+                            .anyMatch(apply -> apply.getUserId().getUserAccountId() == user.getUserAccountId());
+
+                    boolean saved = jobSeekerSaveList.stream()
+                            .anyMatch(save -> save.getUserId().getUserAccountId() == user.getUserAccountId());
+
+                    model.addAttribute("alreadyApplied", exists);
+                    model.addAttribute("alreadySaved", saved);
+                }
+            }
+        }
+
+        model.addAttribute("applyJob", new JobSeekerApply());
+        model.addAttribute("jobDetails", jobDetails);
+        model.addAttribute("user", usersService.getCurrentUserProfile());
+
+        return "job-details";
+    }
+
 
     @PostMapping("job-details/apply/{id}")
     public String apply(@PathVariable("id") int id, JobSeekerApply jobSeekerApply){
@@ -96,7 +137,7 @@ public class JobSeekerApplyController {
                 jobSeekerApply.setJob(jobPostActivity);
                 jobSeekerApply.setApplyDate(new Date());
             }else {
-                throw new UsernameNotFoundException("Could not found user");
+                throw new RuntimeException("Could not found user");
             }
             jobSeekerApplyService.addNew(jobSeekerApply);
         }

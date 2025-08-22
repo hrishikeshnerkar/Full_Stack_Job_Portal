@@ -31,7 +31,6 @@ public interface JobPostActivityRepo extends JpaRepository<JobPostActivity, Inte
             + " OR l.state LIKE %:location%) " +
             " AND (j.job_type IN(:type)) " +
             " AND (j.remote IN(:remote)) ", nativeQuery = true)
-
     List<JobPostActivity> searchWithoutDate(@Param("job") String job,
                                             @Param("location") String location,
                                             @Param("remote") List<String> remote,

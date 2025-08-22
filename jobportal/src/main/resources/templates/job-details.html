@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Candidate Dashboard</title>
-    <meta charset="utf-8"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -74,7 +73,7 @@
         <img
                 class="rounded-circle me-3"
                 height="50px"
-                width="50x"
+                width="50px"
                 th:src="@{${user.photosImagePath}}"
         />
         <label th:text="${user.firstName+' '+user.lastName}" class="nav-item nav-link px-2 me-3">John Doe</label>
@@ -142,12 +141,13 @@
                     <div class="col-md-3 centerCandidate">
                         <div class="candidatesApplied">
                             <label>Candidates Applied for Job</label>
-                            <th:block th:each="applyList:${applyList}">
+                            <th:block th:each="applyList : ${applyList}" th:if="${applyList.userId != null}">
                                 <a th:href="@{/job-seeker-profile/{id}(id=${applyList.userId.userAccountId})}"
                                    class="white"
-                                   th:text="${applyList.userId.firstName+', '+applyList.userId.lastName}">FirstName,
-                                    LastName</a>
+                                   th:text="${applyList.userId.firstName + ', ' + applyList.userId.lastName}">FirstName, LastName
+                                </a>
                             </th:block>
+
                         </div>
                     </div>
                 </div>
@@ -214,3 +214,12 @@
 </script>
 </body>
 </html>
+
+
+
+<!--<th:block th:each="applyList:${applyList}">-->
+<!--    <a th:href="@{/job-seeker-profile/{id}(id=${applyList.userId.userAccountId})}"-->
+<!--       class="white"-->
+<!--       th:text="${applyList.userId.firstName+', '+applyList.userId.lastName}">FirstName,-->
+<!--        LastName</a>-->
+<!--</th:block>-->
