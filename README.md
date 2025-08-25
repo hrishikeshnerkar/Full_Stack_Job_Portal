@@ -73,3 +73,14 @@ Welcome to the Job Portal project—a dynamic, role-based web application built 
 ---
 
 Thanks for checking out my project! Feel free to explore the code, try it out, or reach out if you're interested in collaborating.
+
+---
+
+## 👤 Author
+
+**Hrishikesh**  
+Full-stack developer passionate about building secure, scalable, and well-documented web applications.  
+Specialized in Spring Boot, React, and modern authentication flows.  
+Connect with me on [LinkedIn](https://www.linkedin.com/in/hrishikesh015)
+
+---
